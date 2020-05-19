@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, , shrink-to-fit=no">
+    <title>Mental Math</title>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    <link rel="stylesheet" type="text/css" href="./style.css">
+
+    <!-- Text to speech script -->
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=fJ9jCR1s"></script>
+
+    <!-- toggles -->
+        <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+        
+    <!-- toggles -->
+</head>
+    <body>
+        
+        <header>
+            <!-- Fixed navbar -->
+            <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+                <a class="navbar-brand" href="#">MentalMath.site</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                    </li>
+                </ul>   
+                </div>
+            </nav>
+        </header>
+
+        <main class="fc-pc">
+            <nav>
+                <form id="settings" autocomplete="off">  
+                        <table id="settings_table" class="table table-bordered">
+                            <thead   data-toggle="collapse" data-target="#accordion" class="thead-dark clickable collapse-row collapsed">
+                                <tr><th id="settings_table_head" colspan="2">settings</th></tr>
+                                
+                            </thead>
+                            <tbody id="accordion" class="collapse">
+                            <tr>
+                                <td><label for="operator_name">exercise</label></td>
+                                <td><select id = "operator_name" name="operator_name">
+                                    <option value = "addition">addition</option>
+                                    <option value = "subtraction">subtraction</option>
+                                    <option value = "multiplication">multiplication</option>
+                                    <option value = "division">division</option>
+                                </select></td>
+                            </tr>
+                            <tr>
+                                <td><label for="a_digits"># digits left</label></td>
+                                <td><button id="a_digits_dec">-</button>
+                                    <input id="a_digits" name="a_digits" type="number" min="1" max="15" value="1" step="1">
+                                    <button id="a_digits_inc">+</button></td>
+                            </tr>
+                            <tr>
+                                <td><label for="b_digits"># digits right</label></td>
+                                <td><button id="b_digits_dec">-</button>
+                                    <input id="b_digits" name="b_digits" type="number" min="1" max="15" value="1" step="1">
+                                    <button id="b_digits_inc">+</button></td>
+                            </tr>
+                            <tr>
+                                <td><label for="readAloud">read aloud</label></td>
+                                <td><input style="float: right;" id="readAloud" type="checkbox" name="readAloud" data-toggle="toggle"></td>
+                            </tr>
+                            <tr>
+                                <td><label for="showQuestion">show question</label></td>
+                                <td><input id="showQuestion" type="checkbox" name="showQuestion"  data-toggle="toggle" checked></td>
+                            </tr>
+                            <tr>
+                                <td><label for="speechRecognition">speech recognition</label></td>
+                                <td><input id="speechRecognition" type="checkbox" name="speechRecognition" data-toggle="toggle"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><input class="buttons" id="update_settings" type="submit" value="update settings"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                </form>
+            
+            </nav>
+            <div>
+                <div id="question-area">
+                    <p id="exercise-type"></p>
+                    <p id="question"></p>
+                </div> 
+                <div id="input-area" class="answer-feedback-area">
+                    <form  id="myForm" autocomplete="off">
+                        
+                        <p ><input id="user_answer" name="user_answer" type="number"></p>
+                        
+                        <input type="hidden" name="operator_name"  > 
+                        <input type="hidden" name="a_digits"       >   
+                        <input type="hidden" name="b_digits"       >
+                        <input type="hidden" name="question"       >
+                        <input type="hidden" name="answer"         >
+                        <input type="hidden" name="correct"        >
+                        <input type="hidden" name="username" value="" >
+                        <input type="hidden" name="duration"       >
+                        <input type="submit" class="buttons" id="submit-answer" value="submit">
+                    </form>
+                    
+                </div>
+                <div class="answer-feedback-area" id="feedback">
+                    <div >
+                        <p id="correct-incorrect"></p>
+                        <p id="your-answer"></p>
+                        <p id="correct-answer"></p>
+                        <p id="time-taken"></p>
+                    </div>
+                    <button class="buttons" id="new-question">new question</button>
+                </div>
+            </div>
+            <div>
+                
+                <table id="dailyStatsTable" class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr><th id="daily_stats_heading" scope="col" colspan="2" >daily stats</th></tr>
+                    </thead>
+                    <tr>
+                        <th scope="row">correct</th>
+                        <td id="n_correct"></td>
+                    </tr>
+                        <tr>    
+                            <th scope="row">target</th>
+                            <td id="daily_target"></td>
+                        </tr>     
+                    <tr>
+                        <th scope="row">incorrect</th>
+                        <td id="n_incorrect"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">accuracy</th>
+                        <td id="daily_accuracy"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">time per question </th>
+                        <td id="daily_average_duration"></td>
+                    </tr>
+                </table>
+
+            </div>
+
+        </main>
+    <!-- required scripts for bootstrap begin -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- required scripts for bootstrap end-->
+
+    <!-- toggle -->
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <!-- toggle -->
+
+    <script src="./script.js"></script>
+    </body>
+</html>
